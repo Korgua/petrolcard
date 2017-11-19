@@ -17,29 +17,8 @@ public class MainActivity extends AppCompatActivity {
         if(helpers.isOnline()){
             Toast.makeText(MainActivity.this, "There's an internet connection",Toast.LENGTH_SHORT).show();
         }
+        if(helpers.CheckPetrolcard())
+            Toast.makeText(MainActivity.this, "URL is alive",Toast.LENGTH_SHORT).show();
 
     }
-
-    /*private boolean hasConnection() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = null;
-        if (cm != null) {
-            netInfo = cm.getActiveNetworkInfo();
-        }
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
-
-    public boolean isOnline() {
-        Runtime runtime = Runtime.getRuntime();
-        try {
-            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
-            int     exitValue = ipProcess.waitFor();
-            return (exitValue == 0);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return false;
-    }*/
 }
