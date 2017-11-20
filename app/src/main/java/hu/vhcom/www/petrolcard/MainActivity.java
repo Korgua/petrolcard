@@ -1,8 +1,11 @@
 package hu.vhcom.www.petrolcard;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Toast;
+
+import Utils.VH_CONSTANTS;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -13,12 +16,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        helpers = new Helpers(MainActivity.this);
-        if(helpers.isOnline()){
-            Toast.makeText(MainActivity.this, "There's an internet connection",Toast.LENGTH_SHORT).show();
-        }
-        if(helpers.CheckPetrolcard())
-            Toast.makeText(MainActivity.this, "URL is alive",Toast.LENGTH_SHORT).show();
+        //helpers = new Helpers(MainActivity.this);
+        helpers = new Helpers();
+        helpers.setContext(MainActivity.this);
+        init();
+    }
 
+    protected void init(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+
+        alertDialog.setCancelable(false);
+        alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
+        alertDialog.setTitle("Figyelem");
+        alertDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+
+        if(!helpers.isOnline()){
+            alertDialog.setMessage("A telefon jelenleg nem csatlakozik az Internetre!");
+            alertDialog.show();
+        }
+        if(!helpers.CheckPetrolcard()){
+            alertDialog.setMessage("Az InfoReporter ("+ VH_CONSTANTS.getPetrolcardUrl()+") jelenleg nem elérhető!");
+            alertDialog.show();
+        }
     }
 }
