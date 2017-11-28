@@ -1,9 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="hu.vhcom.www.petrolcard.ServiceCode">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/ServiceCodeHelper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:labelFor="@id/ServiceCodeEditText"
+        android:text="@string/service_code_helper"
+        android:textAlignment="center"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/ServiceCodeEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ServiceCodeHelper"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="5"
+        android:inputType="text"
+        android:text="@string/service_code_default_value"
+        android:textAlignment="center"
+        android:textSize="40sp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:layout_below="@id/ServiceCodeEditText"
+        android:padding="20sp">
+        <Button
+            android:id="@+id/ServiceCodeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/service_code_button_text"
+            />
+    </LinearLayout>
+
+
+</RelativeLayout>

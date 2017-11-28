@@ -1,6 +1,7 @@
 package hu.vhcom.www.petrolcard;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,5 +44,6 @@ public class MainActivity extends AppCompatActivity {
             alertDialog.setMessage("Az InfoReporter ("+ VH_CONSTANTS.getPetrolcardUrl()+") jelenleg nem elérhető!");
             alertDialog.show();
         }
+        startActivity(new Intent(MainActivity.this,ServiceCode.class));
     }
 }
