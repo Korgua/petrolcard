@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">InfoReporter a kezedben</string>
-    <string name="service_code_helper">Kérlek add meg a szervízkódodat</string>
+    <string name="service_code_helper">Add meg a szervízkódodat</string>
     <string name="service_code_button_text">Mentés</string>
 </resources>

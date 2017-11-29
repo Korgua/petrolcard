@@ -20,8 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ServiceCode" android:screenOrientation="portrait"></activity>
-        <activity android:name=".Helpers"></activity>
+        <activity
+            android:name=".ServiceCode"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Helpers" />
+        <activity android:name=".init"></activity>
     </application>
 
 </manifest>

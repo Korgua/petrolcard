@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="hu.vhcom.www.petrolcard.init">
+        <TableLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true">
+            <TableRow
+                android:gravity="center"
+                android:paddingTop="10sp"
+                android:paddingBottom="10sp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Internetkapcsolat"
+                    android:textSize="24sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/yes"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="20sp"/>
+            </TableRow>
+            <TableRow
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="InfoReporter"
+                    android:textSize="24sp"/>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/no"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="20sp"/>
+            </TableRow>
+        </TableLayout>
+</RelativeLayout>

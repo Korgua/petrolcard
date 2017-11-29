@@ -1,6 +1,7 @@
 package hu.vhcom.www.petrolcard;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -58,6 +59,7 @@ public class ServiceCode extends AppCompatActivity {
         }
         else{
             createAlert(messages.getMES_TITLE_FUNFACT(),"Kim Jong-un is ez ta kódot használja rakétaindításhoz",messages.getMES_BTN_WHATEVER());
+            startActivity(new Intent(ServiceCode.this,init.class));
         }
     }
 
