@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name">InfoReporter a kezedben</string>
-    <string name="service_code_default_value">0123x</string>
     <string name="service_code_helper">Kérlek add meg a szervízkódodat</string>
-    <string name="service_code_disclaimer">A szervízkód csak a telefonban kerül mentésre!\nA mellékhatások tekintetében keresse fel jódszerészét, kérdezze meg vajákosát</string>
-    <string name="service_code_accept">Tudomásul vettem, de nem érdekel</string>
     <string name="service_code_button_text">Mentés</string>
 </resources>

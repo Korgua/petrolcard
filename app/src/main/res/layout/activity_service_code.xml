@@ -25,7 +25,6 @@
         android:layout_marginTop="20dp"
         android:ems="5"
         android:inputType="text"
-        android:text="@string/service_code_default_value"
         android:textAlignment="center"
         android:textSize="40sp" />
     <LinearLayout
