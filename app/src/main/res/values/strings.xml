@@ -2,4 +2,13 @@
     <string name="app_name">InfoReporter a kezedben</string>
     <string name="service_code_helper">Add meg a szervízkódodat</string>
     <string name="service_code_button_text">Mentés</string>
+
+
+    <!-- Init activity -->
+    <string name="init_download">Letöltés</string>
+    <string name="init_inforep">InfoReporter</string>
+    <string name="init_service_code">Szervízkód</string>
+    <string name="init_internet">Internetkapcsolat</string>
+
+
 </resources>

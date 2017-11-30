@@ -11,11 +11,10 @@ public class VH_CONSTANTS {
     private static final String PETROLCARD_AUTH = PETROLCARD_NEW+"authme.php";
     private static final String PETROLCARD_DATA = PETROLCARD_NEW + "data.php?sortby=company&ver=1.41&hash=";
     private static final String PETROLCARD_USERNAME = "vhcom";
+
     private static final String SERVICE_CODE_VALIDATOR = "^[0-9]{4}[a-zA-Z]{1}$";
     private static final String PREFS_NAME = "PrefsFile";
-
     private static final String SERVICE_CODE_KEY = "code";
-
 
     public static String getPetrolcardBaseUrl() {return PETROLCARD_BASE_URL;}
     public static String getPetrolcardUrl(){return PETROLCARD_URL;}

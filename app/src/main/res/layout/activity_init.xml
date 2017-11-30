@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,31 +14,85 @@
                 android:paddingTop="10sp"
                 android:paddingBottom="10sp">
                 <TextView
+                    android:id="@+id/TextViewInternetConnection"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Internetkapcsolat"
+                    android:text="@string/init_internet"
                     android:textSize="24sp"/>
-
-                <ImageView
+                <android.support.v4.widget.DrawerLayout
+                    android:id="@+id/ImageViewInternetConncection"
+                    android:contentDescription="@string/init_internet"
+                    android:layout_width="32sp"
+                    android:layout_height="32sp"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="20sp">
+                </android.support.v4.widget.DrawerLayout>
+            </TableRow>
+            <TableRow
+                android:gravity="center"
+                android:paddingTop="10sp"
+                android:paddingBottom="10sp">
+                <TextView
+                    android:id="@+id/TextViewInforeporter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/yes"
+                    android:text="@string/init_inforep"
+                    android:textSize="24sp"/>
+                <ImageView
+                    android:id="@+id/ImageViewInforeporter"
+                    android:contentDescription="@string/init_inforep"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/ic_menu_search"
                     android:layout_marginStart="20sp"
                     android:layout_marginEnd="20sp"/>
             </TableRow>
             <TableRow
-                android:gravity="center">
+                android:gravity="center"
+                android:paddingTop="10sp"
+                android:paddingBottom="10sp">
                 <TextView
+                    android:id="@+id/TextViewServiceCode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="InfoReporter"
+                    android:text="@string/init_service_code"
                     android:textSize="24sp"/>
                 <ImageView
+                    android:id="@+id/ImageViewServiceCode"
+                    android:contentDescription="@string/init_service_code"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/no"
+                    android:background="@android:drawable/ic_menu_search"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="20sp"/>
+            </TableRow>
+            <TableRow
+                android:gravity="center"
+                android:paddingTop="10sp"
+                android:paddingBottom="10sp">
+                <TextView
+                    android:id="@+id/TextViewDownload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/init_download"
+                    android:textSize="24sp"/>
+                <ImageView
+                    android:id="@+id/ImageViewDownload"
+                    android:contentDescription="@string/init_download"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:drawable/ic_menu_search"
                     android:layout_marginStart="20sp"
                     android:layout_marginEnd="20sp"/>
             </TableRow>
         </TableLayout>
+    <ProgressBar
+        android:id="@+id/ProgressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="40sp"
+
+    />
 </RelativeLayout>
