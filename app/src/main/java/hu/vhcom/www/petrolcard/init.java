@@ -1,5 +1,7 @@
 package hu.vhcom.www.petrolcard;
 
+import android.animation.Animator;
+import android.animation.TimeInterpolator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,11 +9,13 @@ import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,8 +25,7 @@ import Utils.VH_CONSTANTS;
 public class init extends AppCompatActivity {
 
     private TextView textViewInternet,textViewInforep,textViewServiceCode,textViewDownload;
-    private ImageView imageViewInforep,imageViewServiceCode,imageViewDownload;
-    DrawerLayout imageViewInternet;
+    private ImageView imageViewInforep,imageViewServiceCode,imageViewDownload,imageViewInternet;
     private Helpers helpers;
     private SharedPreferences sharedPreferences;
 
@@ -61,34 +64,30 @@ public class init extends AppCompatActivity {
             }
         });
 
-        if(!helpers.isOnline()){
-            /*alertDialog.setMessage("A telefon jelenleg nem csatlakozik az Internetre!");
-            alertDialog.show();*/
+        if(helpers.isOnline()){
+            imageViewInternet.animate().setListener(new CrossFade(imageViewInternet,ContextCompat.getDrawable(init.this,R.drawable.yes)));
+            imageViewInternet.animate().alpha(0f).setDuration(1000);
+            imageViewInternet.animate().start();
+
+        }
+        else{
             imageViewInternet.setBackgroundResource(R.drawable.no);
         }
-        else{
-            Drawable drawable[] = new Drawable[2];
-            drawable[0] = ContextCompat.getDrawable(init.this,R.drawable.icon);
-            drawable[1] = ContextCompat.getDrawable(init.this,R.drawable.yes);
-            TransitionDrawable transitionDrawable = new TransitionDrawable(drawable);
-            imageViewInternet.setBackground(transitionDrawable);
-
-            transitionDrawable.startTransition(3000);
-            //imageViewInternet.setBackgroundResource(R.drawable.yes);
+        if(helpers.CheckPetrolcard()){
+            imageViewInforep.animate().setListener(new CrossFade(imageViewInforep,ContextCompat.getDrawable(init.this,R.drawable.yes)));
+            imageViewInforep.animate().alpha(0f).setDuration(1000);
+            imageViewInforep.animate().start();
         }
-        if(!helpers.CheckPetrolcard()){
-            /*alertDialog.setMessage("Az InfoReporter ("+ VH_CONSTANTS.getPetrolcardUrl()+") jelenleg nem elérhető!");
-            alertDialog.show();*/
+        else{
             imageViewInforep.setBackgroundResource(R.drawable.no);
-        }
-        else{
-            imageViewInforep.setBackgroundResource(R.drawable.yes);
         }
         if(sharedPreferences.getString(VH_CONSTANTS.getServiceCodeKey(),"0").equals("0")) {
             startActivity(new Intent(init.this, ServiceCode.class));
         }
         else{
-            imageViewServiceCode.setBackgroundResource(R.drawable.yes);
+            imageViewServiceCode.animate().setListener(new CrossFade(imageViewServiceCode,ContextCompat.getDrawable(init.this,R.drawable.yes)));
+            imageViewServiceCode.animate().alpha(0f).setDuration(1000);
+            imageViewServiceCode.animate().start();
         }
     }
 
@@ -96,5 +95,45 @@ public class init extends AppCompatActivity {
     public void onActivityReenter(int resultCode, Intent data) {
         //super.onActivityReenter(resultCode, data);
         init();
+    }
+
+    private static class CrossFade implements Animator.AnimatorListener{
+
+        private ImageView iv;
+        private Drawable dr;
+        private boolean complete = false;
+        private int duration = 500;
+
+        private CrossFade(ImageView iv, Drawable dr){
+            Log.v("CrossFade","constructor");
+            this.iv = iv;
+            this.dr = dr;
+        }
+
+        @Override
+        public void onAnimationStart(Animator animator) {
+            Log.v("CrossFade","onAnimationStart");
+            //imageViewInternet.animate().start();
+
+        }
+
+        @Override
+        public void onAnimationEnd(Animator animator) {
+            Log.v("CrossFade", "onAnimationEnd");
+            if (!complete) {
+                complete = true;
+                iv.setBackground(dr);
+                iv.animate().alpha(1f).setDuration(duration);
+            }
+        }
+        @Override
+        public void onAnimationCancel(Animator animator) {
+            Log.v("CrossFade","onAnimationCancel");
+        }
+
+        @Override
+        public void onAnimationRepeat(Animator animator) {
+            Log.v("CrossFade","onAnimationRepeat");
+        }
     }
 }
