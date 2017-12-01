@@ -25,7 +25,7 @@ import Utils.VH_CONSTANTS;
 public class init extends AppCompatActivity {
 
     private TextView textViewInternet,textViewInforep,textViewServiceCode,textViewDownload;
-    private ImageView imageViewInforep,imageViewServiceCode,imageViewDownload,imageViewInternet;
+    private ImageView imageViewInforep,imageViewServiceCode,imageViewDownload;//,imageViewInternet;
     private Helpers helpers;
     private SharedPreferences sharedPreferences;
 
@@ -45,7 +45,7 @@ public class init extends AppCompatActivity {
 
         imageViewDownload = findViewById(R.id.ImageViewDownload);
         imageViewInforep = findViewById(R.id.ImageViewInforeporter);
-        imageViewInternet = findViewById(R.id.ImageViewInternetConncection);
+        //imageViewInternet = findViewById(R.id.ImageViewInternetConncection);
         imageViewServiceCode = findViewById(R.id.ImageViewServiceCode);
 
         init();
@@ -64,7 +64,46 @@ public class init extends AppCompatActivity {
             }
         });
 
-        if(helpers.isOnline()){
+        ImageView iv = new ImageView(init.this);
+        iv.setMaxHeight(32);
+        iv.setMaxWidth(32);
+/*
+
+//LinearLayOut Setup
+LinearLayout linearLayout= new LinearLayout(this);
+linearLayout.setOrientation(LinearLayout.VERTICAL);
+
+linearLayout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+LayoutParams.MATCH_PARENT));
+
+//ImageView Setup
+ImageView imageView = new ImageView(this);
+
+//setting image resource
+imageView.setImageResource(R.drawable.play);
+
+//setting image position
+imageView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+LayoutParams.WRAP_CONTENT));
+
+//adding view to layout
+linearLayout.addView(imageView);
+//make visible to program
+setContentView(linearLayout);
+
+
+
+*/
+        /*
+        <ImageView
+                    android:id="@+id/ImageViewInternetConncection"
+                    android:background="@android:drawable/ic_menu_search"
+                    android:contentDescription="@string/init_internet"
+                    android:layout_marginStart="20sp"
+                    android:layout_marginEnd="20sp">
+        */
+
+        /*if(helpers.isOnline()){
             imageViewInternet.animate().setListener(new CrossFade(imageViewInternet,ContextCompat.getDrawable(init.this,R.drawable.yes)));
             imageViewInternet.animate().alpha(0f).setDuration(1000);
             imageViewInternet.animate().start();
@@ -72,7 +111,7 @@ public class init extends AppCompatActivity {
         }
         else{
             imageViewInternet.setBackgroundResource(R.drawable.no);
-        }
+        }*/
         if(helpers.CheckPetrolcard()){
             imageViewInforep.animate().setListener(new CrossFade(imageViewInforep,ContextCompat.getDrawable(init.this,R.drawable.yes)));
             imageViewInforep.animate().alpha(0f).setDuration(1000);
