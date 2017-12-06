@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hu.vhcom.www.petrolcard.init">
+    tools:context="hu.vhcom.www.petrolcard.init"
+    android:id="@+id/Init">
         <TableLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true">
@@ -18,19 +19,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/init_internet"
+                    android:layout_marginEnd="20sp"
                     android:textSize="24sp"/>
-                <!-- <ImageView
-                    android:id="@+id/ImageViewInternetConncection"
-                    android:background="@android:drawable/ic_menu_search"
-                    android:contentDescription="@string/init_internet"
-                    android:layout_marginStart="20sp"
-                    android:layout_marginEnd="20sp">
-                </ImageView> -->
                 <ProgressBar
                     android:id="@+id/ProgressBarInternetConncection"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-
+                    android:layout_marginStart="20sp"
                     />
             </TableRow>
             <TableRow
@@ -43,33 +38,29 @@
                     android:layout_height="wrap_content"
                     android:text="@string/init_inforep"
                     android:textSize="24sp"/>
-                <ImageView
-                    android:id="@+id/ImageViewInforeporter"
-                    android:contentDescription="@string/init_inforep"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/ic_menu_search"
+                <ProgressBar
+                    android:id="@+id/ProgressBarInforeporter"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_marginStart="20sp"
-                    android:layout_marginEnd="20sp"/>
+                    />
             </TableRow>
             <TableRow
-                android:gravity="center"
                 android:paddingTop="10sp"
-                android:paddingBottom="10sp">
+                android:paddingBottom="10sp"
+                android:gravity="center">
                 <TextView
                     android:id="@+id/TextViewServiceCode"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/init_service_code"
                     android:textSize="24sp"/>
-                <ImageView
-                    android:id="@+id/ImageViewServiceCode"
-                    android:contentDescription="@string/init_service_code"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/ic_menu_search"
+                <ProgressBar
+                    android:id="@+id/ProgressBarServiceCode"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_marginStart="20sp"
-                    android:layout_marginEnd="20sp"/>
+                    />
             </TableRow>
             <TableRow
                 android:gravity="center"
@@ -81,14 +72,12 @@
                     android:layout_height="wrap_content"
                     android:text="@string/init_download"
                     android:textSize="24sp"/>
-                <ImageView
-                    android:id="@+id/ImageViewDownload"
-                    android:contentDescription="@string/init_download"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@android:drawable/ic_menu_search"
+                <ProgressBar
+                    android:id="@+id/ProgressBarDownload"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
                     android:layout_marginStart="20sp"
-                    android:layout_marginEnd="20sp"/>
+                    />
             </TableRow>
         </TableLayout>
     <ProgressBar

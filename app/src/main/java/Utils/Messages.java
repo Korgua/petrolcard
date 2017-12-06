@@ -28,6 +28,6 @@ public class Messages {
     public String getMES_TITLE_FUNFACT() {return MES_TITLE_FUNFACT;}
 
     //Toast - Error
-    public static final String TOAST_ERROR_SERVICE_CODE = "Nagy a baj, a szervízkód mentése sikertelen";
+    private static final String TOAST_ERROR_SERVICE_CODE = "Nagy a baj, a szervízkód mentése sikertelen";
     public String getTOAST_ERROR_SERVICE_CODE() {return TOAST_ERROR_SERVICE_CODE;}
 }

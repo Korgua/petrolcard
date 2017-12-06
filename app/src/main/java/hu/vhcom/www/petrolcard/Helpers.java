@@ -16,10 +16,7 @@ import Utils.VH_CONSTANTS;
 
 public class Helpers extends AppCompatActivity{
 
-    private Context context;
-    public void setContext(Context context) {
-        this.context = context;
-    }
+    public void setContext(){}
 
     public Helpers(){}
     public boolean isOnline() {
@@ -88,7 +85,7 @@ public class Helpers extends AppCompatActivity{
             try {
                 Log.v("doInBackground --> url",VH_CONSTANTS.getPetrolcardBaseUrl());
                 Log.v("doInBackground --> port",Integer.toString(VH_CONSTANTS.getPetrolcardPort()));
-                int timeOutInMillis = 1000;
+                int timeOutInMillis = 3000;
                 Socket sock = new Socket();
                 SocketAddress socketAddress = new InetSocketAddress(VH_CONSTANTS.getPetrolcardBaseUrl(),VH_CONSTANTS.getPetrolcardPort());
                 sock.connect(socketAddress, timeOutInMillis);

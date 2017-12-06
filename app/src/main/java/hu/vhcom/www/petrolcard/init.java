@@ -1,31 +1,29 @@
 package hu.vhcom.www.petrolcard;
 
 import android.animation.Animator;
-import android.animation.TimeInterpolator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.TransitionDrawable;
-import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.animation.Animation;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import Utils.VH_CONSTANTS;
 
+import static Utils.ViewReplacer.replaceView;
+
 public class init extends AppCompatActivity {
 
     private TextView textViewInternet,textViewInforep,textViewServiceCode,textViewDownload;
-    private ImageView imageViewInforep,imageViewServiceCode,imageViewDownload;//,imageViewInternet;
+    // imageViewInternet;
+    private ProgressBar progressBarInternetConncection,progressBarInforep,progressServiceCode,progressBarDownload;
     private Helpers helpers;
     private SharedPreferences sharedPreferences;
 
@@ -37,16 +35,15 @@ public class init extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(VH_CONSTANTS.getPrefsName(),MODE_PRIVATE);
 
         helpers = new Helpers();
-        helpers.setContext(init.this);
         textViewInternet = findViewById(R.id.TextViewInternetConnection);
         textViewInforep = findViewById(R.id.TextViewInforeporter);
         textViewServiceCode = findViewById(R.id.TextViewServiceCode);
         textViewDownload = findViewById(R.id.TextViewDownload);
 
-        imageViewDownload = findViewById(R.id.ImageViewDownload);
-        imageViewInforep = findViewById(R.id.ImageViewInforeporter);
-        //imageViewInternet = findViewById(R.id.ImageViewInternetConncection);
-        imageViewServiceCode = findViewById(R.id.ImageViewServiceCode);
+        progressBarDownload = findViewById(R.id.ProgressBarDownload);
+        progressBarInforep = findViewById(R.id.ProgressBarInforeporter);
+        progressBarInternetConncection = findViewById(R.id.ProgressBarInternetConncection);
+        progressServiceCode = findViewById(R.id.ProgressBarServiceCode);
 
         init();
     }
@@ -64,69 +61,74 @@ public class init extends AppCompatActivity {
             }
         });
 
-        ImageView iv = new ImageView(init.this);
-        iv.setMaxHeight(32);
-        iv.setMaxWidth(32);
-/*
+        ImageView myImage;
 
-//LinearLayOut Setup
-LinearLayout linearLayout= new LinearLayout(this);
-linearLayout.setOrientation(LinearLayout.VERTICAL);
 
-linearLayout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-LayoutParams.MATCH_PARENT));
+        View C = findViewById(R.id.ProgressBarInternetConncection);
 
-//ImageView Setup
-ImageView imageView = new ImageView(this);
-
-//setting image resource
-imageView.setImageResource(R.drawable.play);
-
-//setting image position
-imageView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-LayoutParams.WRAP_CONTENT));
-
-//adding view to layout
-linearLayout.addView(imageView);
-//make visible to program
-setContentView(linearLayout);
+        //replaceView(C,myImage);
 
 
 
-*/
-        /*
-        <ImageView
-                    android:id="@+id/ImageViewInternetConncection"
-                    android:background="@android:drawable/ic_menu_search"
-                    android:contentDescription="@string/init_internet"
-                    android:layout_marginStart="20sp"
-                    android:layout_marginEnd="20sp">
-        */
 
-        /*if(helpers.isOnline()){
-            imageViewInternet.animate().setListener(new CrossFade(imageViewInternet,ContextCompat.getDrawable(init.this,R.drawable.yes)));
-            imageViewInternet.animate().alpha(0f).setDuration(1000);
-            imageViewInternet.animate().start();
+        if(helpers.isOnline()){
+            myImage = new ImageView(this);
+            myImage.setAlpha(0f);
+            myImage.setImageResource(R.drawable.yes);
 
+            replaceView(progressBarInternetConncection,myImage);
+            myImage.animate().alpha(1f).setDuration(5000);
+            myImage.animate().start();
+
+            if(helpers.CheckPetrolcard()) {
+                myImage = new ImageView(this);
+                myImage.setAlpha(0f);
+                myImage.setImageResource(R.drawable.yes);
+
+                replaceView(progressBarInforep,myImage);
+                myImage.animate().alpha(1f).setDuration(5000);
+                myImage.animate().start();
+            }
+            else{
+                myImage = new ImageView(this);
+                myImage.setAlpha(0f);
+                myImage.setImageResource(R.drawable.no);
+
+                replaceView(progressBarInforep,myImage);
+                myImage.animate().alpha(1f).setDuration(5000);
+                myImage.animate().start();
+            }
         }
         else{
-            imageViewInternet.setBackgroundResource(R.drawable.no);
-        }*/
-        if(helpers.CheckPetrolcard()){
-            imageViewInforep.animate().setListener(new CrossFade(imageViewInforep,ContextCompat.getDrawable(init.this,R.drawable.yes)));
-            imageViewInforep.animate().alpha(0f).setDuration(1000);
-            imageViewInforep.animate().start();
-        }
-        else{
-            imageViewInforep.setBackgroundResource(R.drawable.no);
+            myImage = new ImageView(this);
+            myImage.setAlpha(0f);
+            myImage.setImageResource(R.drawable.no);
+
+            replaceView(progressBarInternetConncection,myImage);
+
+            myImage.animate().alpha(1f).setDuration(5000);
+            myImage.animate().start();
+
+            myImage = new ImageView(this);
+            myImage.setAlpha(0f);
+            myImage.setImageResource(R.drawable.no);
+
+            replaceView(progressBarInforep,myImage);
+
+            myImage.animate().alpha(1f).setDuration(5000);
+            myImage.animate().start();
         }
         if(sharedPreferences.getString(VH_CONSTANTS.getServiceCodeKey(),"0").equals("0")) {
             startActivity(new Intent(init.this, ServiceCode.class));
         }
         else{
-            imageViewServiceCode.animate().setListener(new CrossFade(imageViewServiceCode,ContextCompat.getDrawable(init.this,R.drawable.yes)));
-            imageViewServiceCode.animate().alpha(0f).setDuration(1000);
-            imageViewServiceCode.animate().start();
+            myImage = new ImageView(this);
+            myImage.setAlpha(0f);
+            myImage.setImageResource(R.drawable.yes);
+
+            replaceView(progressServiceCode,myImage);
+            myImage.animate().alpha(1f).setDuration(5000);
+            myImage.animate().start();
         }
     }
 
