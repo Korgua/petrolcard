@@ -3,10 +3,6 @@ package Utils;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by korgua on 2017. 12. 06..
- */
-
 public class ViewReplacer {
     private static ViewGroup getParent(View view) {
         return (ViewGroup)view.getParent();

@@ -1,31 +1,29 @@
 package hu.vhcom.www.petrolcard;
 
-import android.animation.Animator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
+import java.util.concurrent.TimeUnit;
 
 import Utils.VH_CONSTANTS;
+import okhttp3.OkHttpClient;
 
 import static Utils.ViewReplacer.replaceView;
 
 public class init extends AppCompatActivity {
 
-    private TextView textViewInternet,textViewInforep,textViewServiceCode,textViewDownload;
+    //private TextView textViewInternet,textViewInforep,textViewServiceCode,textViewDownload;
     // imageViewInternet;
     private ProgressBar progressBarInternetConncection,progressBarInforep,progressServiceCode,progressBarDownload;
     private Helpers helpers;
     private SharedPreferences sharedPreferences;
+    private static final int DURATION = VH_CONSTANTS.getAnimationDuration();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,20 +33,20 @@ public class init extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(VH_CONSTANTS.getPrefsName(),MODE_PRIVATE);
 
         helpers = new Helpers();
-        textViewInternet = findViewById(R.id.TextViewInternetConnection);
+        /*textViewInternet = findViewById(R.id.TextViewInternetConnection);
         textViewInforep = findViewById(R.id.TextViewInforeporter);
         textViewServiceCode = findViewById(R.id.TextViewServiceCode);
-        textViewDownload = findViewById(R.id.TextViewDownload);
+        textViewDownload = findViewById(R.id.TextViewDownload);*/
 
         progressBarDownload = findViewById(R.id.ProgressBarDownload);
         progressBarInforep = findViewById(R.id.ProgressBarInforeporter);
         progressBarInternetConncection = findViewById(R.id.ProgressBarInternetConncection);
         progressServiceCode = findViewById(R.id.ProgressBarServiceCode);
 
-        init();
+        //PreloadSettings();
     }
 
-    protected void init(){
+    protected void PreloadSettings(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(init.this);
 
         alertDialog.setCancelable(false);
@@ -63,30 +61,22 @@ public class init extends AppCompatActivity {
 
         ImageView myImage;
 
-
-        View C = findViewById(R.id.ProgressBarInternetConncection);
-
-        //replaceView(C,myImage);
-
-
-
-
-        if(helpers.isOnline()){
+        if(helpers.ConnectionTesting(VH_CONSTANTS.getPetrolcardBaseUrl(),VH_CONSTANTS.getPetrolcardPort())){
             myImage = new ImageView(this);
             myImage.setAlpha(0f);
             myImage.setImageResource(R.drawable.yes);
 
             replaceView(progressBarInternetConncection,myImage);
-            myImage.animate().alpha(1f).setDuration(5000);
+            myImage.animate().alpha(1f).setDuration(DURATION);
             myImage.animate().start();
 
-            if(helpers.CheckPetrolcard()) {
+            if(helpers.ConnectionTesting(VH_CONSTANTS.getCheckInternetVia(),80)) {
                 myImage = new ImageView(this);
                 myImage.setAlpha(0f);
                 myImage.setImageResource(R.drawable.yes);
 
                 replaceView(progressBarInforep,myImage);
-                myImage.animate().alpha(1f).setDuration(5000);
+                myImage.animate().alpha(1f).setDuration(DURATION);
                 myImage.animate().start();
             }
             else{
@@ -95,7 +85,7 @@ public class init extends AppCompatActivity {
                 myImage.setImageResource(R.drawable.no);
 
                 replaceView(progressBarInforep,myImage);
-                myImage.animate().alpha(1f).setDuration(5000);
+                myImage.animate().alpha(1f).setDuration(DURATION);
                 myImage.animate().start();
             }
         }
@@ -106,7 +96,7 @@ public class init extends AppCompatActivity {
 
             replaceView(progressBarInternetConncection,myImage);
 
-            myImage.animate().alpha(1f).setDuration(5000);
+            myImage.animate().alpha(1f).setDuration(DURATION);
             myImage.animate().start();
 
             myImage = new ImageView(this);
@@ -115,66 +105,84 @@ public class init extends AppCompatActivity {
 
             replaceView(progressBarInforep,myImage);
 
-            myImage.animate().alpha(1f).setDuration(5000);
+            myImage.animate().alpha(1f).setDuration(DURATION);
             myImage.animate().start();
         }
         if(sharedPreferences.getString(VH_CONSTANTS.getServiceCodeKey(),"0").equals("0")) {
             startActivity(new Intent(init.this, ServiceCode.class));
         }
         else{
+            String PERSONAL_CODE = sharedPreferences.getString(VH_CONSTANTS.getServiceCodeKey(),"0");
+
             myImage = new ImageView(this);
             myImage.setAlpha(0f);
             myImage.setImageResource(R.drawable.yes);
 
             replaceView(progressServiceCode,myImage);
-            myImage.animate().alpha(1f).setDuration(5000);
+            myImage.animate().alpha(1f).setDuration(DURATION);
             myImage.animate().start();
+
+            if(sharedPreferences.getString("cookie","0").equals("0")){
+                try{
+                    getCookieAsync getCookieAsync = new getCookieAsync();
+                    String cookie = getCookieAsync.execute().get();
+                    //String cookie = getCookie();
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString("cookie",cookie);
+                    editor.apply();
+                    Log.v("cookie",cookie);
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+            else{
+                Log.v("else cookie",sharedPreferences.getString("cookie","0"));
+                try {
+                    getRealmAsync getRealmAsync = new getRealmAsync();
+                    String realm = getRealmAsync.execute(sharedPreferences.getString("cookie", "0")).get();
+                    if(realm == null){
+                        getRealmAsync = new getRealmAsync();
+                        realm = getRealmAsync.execute(sharedPreferences.getString("cookie", "0")).get();
+                    }
+                    CodeCalculator codeCalculator = new CodeCalculator(realm,PERSONAL_CODE);
+                    Log.v("realm",realm);
+                    Log.v("codeCalculator",realm+"+"+PERSONAL_CODE+"="+codeCalculator.Calc());
+                }
+                catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
         }
+    }
+
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 
     @Override
-    public void onActivityReenter(int resultCode, Intent data) {
-        //super.onActivityReenter(resultCode, data);
-        init();
+    protected void onResume() {
+        super.onResume();
+        Log.v("onActivityReenter","true");
+        PreloadSettings();
     }
 
-    private static class CrossFade implements Animator.AnimatorListener{
-
-        private ImageView iv;
-        private Drawable dr;
-        private boolean complete = false;
-        private int duration = 500;
-
-        private CrossFade(ImageView iv, Drawable dr){
-            Log.v("CrossFade","constructor");
-            this.iv = iv;
-            this.dr = dr;
+    private String getCookie()throws Exception{
+        getCookieAsync getCookie = new getCookieAsync();
+        try{
+           return getCookie.execute().get();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
 
-        @Override
-        public void onAnimationStart(Animator animator) {
-            Log.v("CrossFade","onAnimationStart");
-            //imageViewInternet.animate().start();
-
-        }
-
-        @Override
-        public void onAnimationEnd(Animator animator) {
-            Log.v("CrossFade", "onAnimationEnd");
-            if (!complete) {
-                complete = true;
-                iv.setBackground(dr);
-                iv.animate().alpha(1f).setDuration(duration);
-            }
-        }
-        @Override
-        public void onAnimationCancel(Animator animator) {
-            Log.v("CrossFade","onAnimationCancel");
-        }
-
-        @Override
-        public void onAnimationRepeat(Animator animator) {
-            Log.v("CrossFade","onAnimationRepeat");
-        }
+        return null;
     }
+
+
 }

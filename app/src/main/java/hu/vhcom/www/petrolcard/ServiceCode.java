@@ -1,7 +1,6 @@
 package hu.vhcom.www.petrolcard;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -70,6 +69,7 @@ public class ServiceCode extends AppCompatActivity {
     public void onBackPressed() {
         //super.onBackPressed();
         Log.v("onBackPressed","Back pressed");
+        Toast.makeText(ServiceCode.this,Messages.getTOAST_RES_BACK(),Toast.LENGTH_SHORT).show();
     }
 
     private void validation(String sCodeStr){
@@ -86,7 +86,6 @@ public class ServiceCode extends AppCompatActivity {
             alertBuilder.setPositiveButton(messages.getMES_BTN_WHATEVER(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    //startActivity(new Intent(ServiceCode.this,init.class));
                     finish();
                 }
             });

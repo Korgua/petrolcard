@@ -1,71 +1,23 @@
 package hu.vhcom.www.petrolcard;
 
-import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
-import java.util.concurrent.TimeUnit;
-
-import Utils.VH_CONSTANTS;
 
 public class Helpers extends AppCompatActivity{
 
-    public void setContext(){}
-
     public Helpers(){}
-    public boolean isOnline() {
-        IsOnlineAsync isOnlineAsync = new IsOnlineAsync();
+
+    public boolean ConnectionTesting(String url, int port){
+        ConnectionTestingAsync connectionTestingAsync = new ConnectionTestingAsync();
+        String params[] = {url,Integer.toString(port)};
         try {
-            boolean b = isOnlineAsync.execute().get();
-            Log.v("isOnlineAsync", String.valueOf(b));
-            return b;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    static class IsOnlineAsync extends AsyncTask<Void, Void, Boolean>{
-        private boolean b = false;
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(b);
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            try {
-                Log.v("doInBackground --> url", "www.google.com");
-                Log.v("doInBackground --> port", "80");
-                int timeOutInMillis = 1000;
-                Socket sock = new Socket();
-                SocketAddress socketAddress = new InetSocketAddress("www.google.com", 80);
-                sock.connect(socketAddress, timeOutInMillis);
-                sock.close();
-                Log.v("checkUrlWithPort", "after close");
-                b = true;
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                b = false;
-                return false;
-            }
-        }
-
-    }
-
-
-    public boolean CheckPetrolcard(){
-        CheckPetrolcardAsync checkPetrolcardAsync = new CheckPetrolcardAsync();
-        try {
-            boolean b = checkPetrolcardAsync.execute().get();
-            Log.v("CheckPetrolcard", String.valueOf(b));
+            boolean b = connectionTestingAsync.execute(params).get();
+            Log.v("ConnectionTesting", String.valueOf(b));
             return b;
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,7 +25,7 @@ public class Helpers extends AppCompatActivity{
         return  false;
     }
 
-    static class CheckPetrolcardAsync extends AsyncTask<Void, Void, Boolean>{
+    static class ConnectionTestingAsync extends AsyncTask<String, Void, Boolean>{
         private boolean b = false;
         @Override
         protected void onPostExecute(Boolean aBoolean) {
@@ -81,16 +33,16 @@ public class Helpers extends AppCompatActivity{
         }
 
         @Override
-        protected Boolean doInBackground(Void... voids) {
+        protected Boolean doInBackground(String... strings) {
+            String url = strings[0];
+            int port = Integer.parseInt(strings[1]);
             try {
-                Log.v("doInBackground --> url",VH_CONSTANTS.getPetrolcardBaseUrl());
-                Log.v("doInBackground --> port",Integer.toString(VH_CONSTANTS.getPetrolcardPort()));
+                Log.v("ConnectionTestingAsync",url+":"+Integer.toString(port));
                 int timeOutInMillis = 3000;
                 Socket sock = new Socket();
-                SocketAddress socketAddress = new InetSocketAddress(VH_CONSTANTS.getPetrolcardBaseUrl(),VH_CONSTANTS.getPetrolcardPort());
+                SocketAddress socketAddress = new InetSocketAddress(url,port);
                 sock.connect(socketAddress, timeOutInMillis);
                 sock.close();
-                Log.v("checkUrlWithPort","after close");
                 b = true;
                 return true;
             }

@@ -30,4 +30,8 @@ public class Messages {
     //Toast - Error
     private static final String TOAST_ERROR_SERVICE_CODE = "Nagy a baj, a szervízkód mentése sikertelen";
     public String getTOAST_ERROR_SERVICE_CODE() {return TOAST_ERROR_SERVICE_CODE;}
+
+    //Toast - Restriction
+    private static final String TOAST_RES_BACK = "Ki itt belépsz, hagyj fel minden reménnyel";
+    public static String getTOAST_RES_BACK() {return TOAST_RES_BACK;}
 }
