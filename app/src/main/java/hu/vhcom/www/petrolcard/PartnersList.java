@@ -52,7 +52,7 @@ public class PartnersList extends AppCompatActivity {
 
 
     }
-
+//https://www.androidhive.info/2011/11/android-xml-parsing-tutorial/
     private ArrayList<Partners> parseXML(XmlPullParser parser) throws XmlPullParserException,IOException
     {
         ArrayList<Partners> partners = null;
