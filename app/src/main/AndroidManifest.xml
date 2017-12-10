@@ -24,7 +24,8 @@
             android:name=".ServiceCode"
             android:screenOrientation="portrait" />
         <activity android:name=".Helpers" />
-        <activity android:name=".init"></activity>
+        <activity android:name=".init" />
+        <activity android:name=".PartnersList"></activity>
     </application>
 
 </manifest>

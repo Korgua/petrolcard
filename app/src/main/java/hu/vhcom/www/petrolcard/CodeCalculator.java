@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class CodeCalculator {
+class CodeCalculator {
     private static String INPUT_CODE;
 
     private static void setInputCode(String inputCode) {INPUT_CODE = inputCode;}
@@ -15,13 +15,13 @@ public class CodeCalculator {
 
     private static String PERSONAL_CODE;
 
-    public CodeCalculator(String inputCode, String personalCode) {
+    CodeCalculator(String inputCode, String personalCode) {
         setInputCode(inputCode);
         setPersonalCode(personalCode);
     }
 
 
-    public String Calc(){
+    String Calc(){
         Date now = new Date();
         Log.v("date",now.toString());
 
@@ -57,10 +57,10 @@ public class CodeCalculator {
         sb.append(Integer.toString(temp));
         sb.append(Character.toString(persCode_5th_char).toLowerCase());
 
-        Log.v("dayOfWeek",Integer.toString(dayOfWeek));
+        /*Log.v("dayOfWeek",Integer.toString(dayOfWeek));
         Log.v("dayOfMonth",Integer.toString(dayOfMonth));
         Log.v("month",Integer.toString(month));
-        Log.v("OUTPUT_CODE",sb.toString());
+        Log.v("OUTPUT_CODE",sb.toString());*/
 
         return sb.toString();
     }

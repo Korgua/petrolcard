@@ -1,5 +1,6 @@
 package hu.vhcom.www.petrolcard;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,10 +10,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import java.util.concurrent.TimeUnit;
+
+import java.io.OutputStreamWriter;
 
 import Utils.VH_CONSTANTS;
-import okhttp3.OkHttpClient;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 import static Utils.ViewReplacer.replaceView;
 
@@ -124,7 +127,7 @@ public class init extends AppCompatActivity {
 
             if(sharedPreferences.getString("cookie","0").equals("0")){
                 try{
-                    getCookieAsync getCookieAsync = new getCookieAsync();
+                    GetCookieAsync getCookieAsync = new GetCookieAsync();
                     String cookie = getCookieAsync.execute().get();
                     //String cookie = getCookie();
                     SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -139,15 +142,39 @@ public class init extends AppCompatActivity {
             else{
                 Log.v("else cookie",sharedPreferences.getString("cookie","0"));
                 try {
-                    getRealmAsync getRealmAsync = new getRealmAsync();
-                    String realm = getRealmAsync.execute(sharedPreferences.getString("cookie", "0")).get();
-                    if(realm == null){
-                        getRealmAsync = new getRealmAsync();
-                        realm = getRealmAsync.execute(sharedPreferences.getString("cookie", "0")).get();
+                    String cookie = sharedPreferences.getString("cookie", "0");
+                    GetRealmAsync getRealmAsync = new GetRealmAsync();
+                    String realm = getRealmAsync.execute(cookie).get();
+                    if (realm == null) {
+                        getRealmAsync = new GetRealmAsync();
+                        realm = getRealmAsync.execute(cookie).get();
                     }
-                    CodeCalculator codeCalculator = new CodeCalculator(realm,PERSONAL_CODE);
-                    Log.v("realm",realm);
-                    Log.v("codeCalculator",realm+"+"+PERSONAL_CODE+"="+codeCalculator.Calc());
+                    CodeCalculator codeCalculator = new CodeCalculator(realm, PERSONAL_CODE);
+                    String password = codeCalculator.Calc();
+                    Log.v("codeCalculator", realm + "+" + PERSONAL_CODE + "=" + password);
+                    AuthenticateAsync authenticateAsync = new AuthenticateAsync();
+                    Response response = authenticateAsync.execute(new String[]{password, cookie}).get();
+                    ResponseBody responseBody = response.body();
+                    if (responseBody != null) {
+                        if (responseBody.string().startsWith("authentication")) {
+                            Log.v("2nd attemp", "auth");
+                            authenticateAsync = new AuthenticateAsync();
+                            authenticateAsync.execute(new String[]{password, cookie}).get();
+                            DownloadXmlAsync downloadXmlAsync = new DownloadXmlAsync();
+                            String xml = downloadXmlAsync.execute(cookie).get();
+                            try {
+                                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("partnerlist.xml", Context.MODE_PRIVATE));
+                                outputStreamWriter.write(xml);
+                                outputStreamWriter.close();
+                                startActivity(new Intent(init.this,PartnersList.class));
+                            }
+                            catch (Exception e){
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+
                 }
                 catch (Exception e){
                     e.printStackTrace();
@@ -171,18 +198,4 @@ public class init extends AppCompatActivity {
         Log.v("onActivityReenter","true");
         PreloadSettings();
     }
-
-    private String getCookie()throws Exception{
-        getCookieAsync getCookie = new getCookieAsync();
-        try{
-           return getCookie.execute().get();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
-
-
 }

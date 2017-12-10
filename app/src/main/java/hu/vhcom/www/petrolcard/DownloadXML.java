@@ -77,6 +77,14 @@ public class DownloadXML extends Activity {
                         }).build();
     }
 
+    private static int responseCount(Response response) {
+        int result = 1;
+        while ((response = response.priorResponse()) != null) {
+            result++;
+        }
+        return result;
+    }
+
     public static String getCookie(OkHttpClient httpClient, String url)throws Exception{
         Request request = new Request.Builder()
                 .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36")
@@ -172,7 +180,7 @@ public class DownloadXML extends Activity {
             httpClient = createAuthenticatedClient(realmResponseCode);
             Request request = new Request.Builder().url(anyURL).header("Cookie", phpSessionID).build();
             Response response = httpClient.newCall(request).execute();
-            Log.i("authenticate", response.message());
+            Log.i("authenticate", response.body().string());
             if (!response.isSuccessful())
                 throw new Exception();
 
@@ -182,6 +190,8 @@ public class DownloadXML extends Activity {
         }
         return null;
     }
+
+
 
 
     /*public DownloadXML(Context context) throws Exception {
