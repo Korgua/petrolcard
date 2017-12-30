@@ -1,99 +1,60 @@
 package hu.vhcom.www.petrolcard;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.ListActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
 
-import org.w3c.dom.Text;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
-
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class PartnersList extends AppCompatActivity {
-    private TextView textView;
+import Utils.VH_CONSTANTS;
+import Utils.XMLParser;
+
+
+public class PartnersList extends ListActivity {
+    static final String KEY_ITEM = "site"; // parent node
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_partners_list);
-        textView = findViewById(R.id.textView);
-        XmlPullParserFactory pullParserFactory;
-        try {
-            pullParserFactory = XmlPullParserFactory.newInstance();
-            XmlPullParser parser = pullParserFactory.newPullParser();
 
-            InputStream in_s = openFileInput("partnerlist.xml");
-            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
-            parser.setInput(in_s, null);
+        String xml = readFromFile(VH_CONSTANTS.getPartnerlistFileName());
+        ArrayList<HashMap<String, String>> menuItems = new ArrayList<HashMap<String, String>>();
+        XMLParser parser = new XMLParser();
+        Document doc = parser.getDomElement(xml); // getting DOM element
 
-            ArrayList<Partners> partners =  parseXML(parser);
-            StringBuilder sb = new StringBuilder();
-            String text="";
+        NodeList nl = doc.getElementsByTagName(KEY_ITEM);
 
-            for(Partners partner:partners) {
-                sb.append("id : " + partner.getId() + "\n");
-                sb.append("company: "+partner.company+"\n");
+        for (int i = 0; i < nl.getLength(); i++) {
+            // creating new HashMap
+
+
+            HashMap<String, String> map = new HashMap<String, String>();
+            Element e = (Element) nl.item(i);
+
+            NodeList ll = e.getElementsByTagName("client");
+
+            Log.v("Element company",e.getAttribute("company")+": "+e.getAttribute("address")+", inner:"+ll.getLength());
+            for(int j=0;j<ll.getLength();j++){
+                Element el = (Element)ll.item(j);
+                Log.v("inner Element",el.getAttribute("machinename"));
             }
-            textView.setText(sb.toString());
-
-
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
+            menuItems.add(map);
         }
-
 
     }
 //https://www.androidhive.info/2011/11/android-xml-parsing-tutorial/
-    private ArrayList<Partners> parseXML(XmlPullParser parser) throws XmlPullParserException,IOException
-    {
-        ArrayList<Partners> partners = null;
-        int eventType = parser.getEventType();
-        Partners partner = null;
 
-        while (eventType != XmlPullParser.END_DOCUMENT){
-            String name;
-            switch (eventType){
-                case XmlPullParser.START_DOCUMENT:
-                    Log.v("eventType","START_DOCUMENT");
-                    partners = new ArrayList();
-                    break;
-                case XmlPullParser.START_TAG:
-                    name = parser.getName();
-                    Log.v("parser.getName",parser.getName());
-                    if (name.equals("site")) {
-                        partner = new Partners();
-                        partner.id = parser.getAttributeValue(null, "id");
-                        partner.company = parser.getAttributeValue(null, "company");
-                        partner.guid = parser.getAttributeValue(null, "guid");
-                    }
-                    break;
-                case XmlPullParser.END_TAG:
-                    name = parser.getName();
-                    if (name.equalsIgnoreCase("site") && partner != null){
-                        partners.add(partner);
-                    }
-            }
-            eventType = parser.next();
-        }
-
-        return partners;
-
-    }
-
-
-    private String readFromFile(){
+    private String readFromFile(String file){
         String result = null;
         try {
-            InputStream inputStream = openFileInput("partnerlist.xml");
+            InputStream inputStream = openFileInput(file);
             if(inputStream != null){
                 InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader);

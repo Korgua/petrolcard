@@ -21,6 +21,8 @@ public class VH_CONSTANTS {
 
     private static final int ANIMATION_DURATION = 1000;
 
+    private static final String PARTNERLIST_FILE_NAME = "partnerlist.xml";
+
     public static String getPetrolcardHttpReferer(){return PETROLCARD_HTTP_REFERER;}
     public static String getPetrolcardBaseUrl()    {return PETROLCARD_BASE_URL;}
     public static String getPetrolcardUrl()        {return PETROLCARD_URL;}
@@ -34,6 +36,6 @@ public class VH_CONSTANTS {
     public static int    getPetrolcardPort()       {return PETROLCARD_PORT;}
     public static String getCheckInternetVia()     {return CHECK_INTERNET_VIA;}
     public static int    getAnimationDuration()    {return ANIMATION_DURATION;}
-
+    public static String getPartnerlistFileName()  {return PARTNERLIST_FILE_NAME;}
 
 }
