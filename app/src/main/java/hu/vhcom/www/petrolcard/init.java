@@ -49,7 +49,7 @@ public class init extends AppCompatActivity {
         //PreloadSettings();
     }
 
-    protected void PreloadSettings(){
+    protected void PreloadSettings() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(init.this);
 
         alertDialog.setCancelable(false);
@@ -64,40 +64,38 @@ public class init extends AppCompatActivity {
 
         ImageView myImage;
 
-        if(helpers.ConnectionTesting(VH_CONSTANTS.getPetrolcardBaseUrl(),VH_CONSTANTS.getPetrolcardPort())){
+        if (helpers.ConnectionTesting(VH_CONSTANTS.getPetrolcardBaseUrl(), VH_CONSTANTS.getPetrolcardPort())) {
             myImage = new ImageView(this);
             myImage.setAlpha(0f);
             myImage.setImageResource(R.drawable.yes);
 
-            replaceView(progressBarInternetConncection,myImage);
+            replaceView(progressBarInternetConncection, myImage);
             myImage.animate().alpha(1f).setDuration(DURATION);
             myImage.animate().start();
 
-            if(helpers.ConnectionTesting(VH_CONSTANTS.getCheckInternetVia(),80)) {
+            if (helpers.ConnectionTesting(VH_CONSTANTS.getCheckInternetVia(), 80)) {
                 myImage = new ImageView(this);
                 myImage.setAlpha(0f);
                 myImage.setImageResource(R.drawable.yes);
 
-                replaceView(progressBarInforep,myImage);
+                replaceView(progressBarInforep, myImage);
                 myImage.animate().alpha(1f).setDuration(DURATION);
                 myImage.animate().start();
-            }
-            else{
+            } else {
                 myImage = new ImageView(this);
                 myImage.setAlpha(0f);
                 myImage.setImageResource(R.drawable.no);
 
-                replaceView(progressBarInforep,myImage);
+                replaceView(progressBarInforep, myImage);
                 myImage.animate().alpha(1f).setDuration(DURATION);
                 myImage.animate().start();
             }
-        }
-        else{
+        } else {
             myImage = new ImageView(this);
             myImage.setAlpha(0f);
             myImage.setImageResource(R.drawable.no);
 
-            replaceView(progressBarInternetConncection,myImage);
+            replaceView(progressBarInternetConncection, myImage);
 
             myImage.animate().alpha(1f).setDuration(DURATION);
             myImage.animate().start();
@@ -106,81 +104,76 @@ public class init extends AppCompatActivity {
             myImage.setAlpha(0f);
             myImage.setImageResource(R.drawable.no);
 
-            replaceView(progressBarInforep,myImage);
+            replaceView(progressBarInforep, myImage);
 
             myImage.animate().alpha(1f).setDuration(DURATION);
             myImage.animate().start();
         }
-        if(sharedPreferences.getString(VH_CONSTANTS.getServiceCodeKey(),"0").equals("0")) {
+        if (sharedPreferences.getString(VH_CONSTANTS.getServiceCodeKey(), "0").equals("0")) {
             startActivity(new Intent(init.this, ServiceCode.class));
-        }
-        else{
-            String PERSONAL_CODE = sharedPreferences.getString(VH_CONSTANTS.getServiceCodeKey(),"0");
+        } else {
+            String PERSONAL_CODE = sharedPreferences.getString(VH_CONSTANTS.getServiceCodeKey(), "0");
 
             myImage = new ImageView(this);
             myImage.setAlpha(0f);
             myImage.setImageResource(R.drawable.yes);
 
-            replaceView(progressServiceCode,myImage);
+            replaceView(progressServiceCode, myImage);
             myImage.animate().alpha(1f).setDuration(DURATION);
             myImage.animate().start();
-
-            if(sharedPreferences.getString("cookie","0").equals("0")){
-                try{
-                    GetCookieAsync getCookieAsync = new GetCookieAsync();
-                    String cookie = getCookieAsync.execute().get();
-                    //String cookie = getCookie();
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("cookie",cookie);
-                    editor.apply();
-                    Log.v("cookie",cookie);
-                }
-                catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-            else{
-                Log.v("else cookie",sharedPreferences.getString("cookie","0"));
+                Authenticate(PERSONAL_CODE);
                 try {
                     String cookie = sharedPreferences.getString("cookie", "0");
-                    GetRealmAsync getRealmAsync = new GetRealmAsync();
-                    String realm = getRealmAsync.execute(cookie).get();
-                    if (realm == null) {
-                        getRealmAsync = new GetRealmAsync();
-                        realm = getRealmAsync.execute(cookie).get();
-                    }
-                    CodeCalculator codeCalculator = new CodeCalculator(realm, PERSONAL_CODE);
-                    String password = codeCalculator.Calc();
-                    Log.v("codeCalculator", realm + "+" + PERSONAL_CODE + "=" + password);
-                    AuthenticateAsync authenticateAsync = new AuthenticateAsync();
-                    Response response = authenticateAsync.execute(new String[]{password, cookie}).get();
-                    ResponseBody responseBody = response.body();
-                    if (responseBody != null) {
-                        if (responseBody.string().startsWith("authentication")) {
-                            Log.v("2nd attemp", "auth");
-                            authenticateAsync = new AuthenticateAsync();
-                            authenticateAsync.execute(new String[]{password, cookie}).get();
-                            DownloadXmlAsync downloadXmlAsync = new DownloadXmlAsync();
-                            String xml = downloadXmlAsync.execute(cookie).get();
-                            try {
-                                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("partnerlist.xml", Context.MODE_PRIVATE));
-                                outputStreamWriter.write(xml);
-                                outputStreamWriter.close();
-                                startActivity(new Intent(init.this,PartnersList.class));
-                            }
-                            catch (Exception e){
-                                e.printStackTrace();
-                            }
-                        }
+                    DownloadXmlAsync downloadXmlAsync = new DownloadXmlAsync();
+                    String xml = downloadXmlAsync.execute(cookie).get();
+                    Log.v("downloaded xml",xml);
+                    try {
+                        OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("partnerlist.xml", Context.MODE_PRIVATE));
+                        outputStreamWriter.write(xml);
+                        outputStreamWriter.close();
+                        startActivity(new Intent(init.this, PartnersList.class));
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
-
-                }
-                catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
+    }
+
+    public void Authenticate(String PERSONAL_CODE){
+        try {
+            GetCookieAsync getCookieAsync = new GetCookieAsync();
+            String cookie = getCookieAsync.execute().get();
+            //String cookie = getCookie();
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("cookie", cookie);
+            editor.apply();
+            Log.v("Cookie setted", cookie);
+            GetRealmAsync getRealmAsync = new GetRealmAsync();
+            String realm = getRealmAsync.execute(cookie).get();
+            if (realm == null) {
+                getRealmAsync = new GetRealmAsync();
+                realm = getRealmAsync.execute(cookie).get();
+            }
+            CodeCalculator codeCalculator = new CodeCalculator(realm, PERSONAL_CODE);
+            String password = codeCalculator.Calc();
+            Log.v("codeCalculator", realm + "+" + PERSONAL_CODE + "=" + password);
+            AuthenticateAsync authenticateAsync = new AuthenticateAsync();
+            Response response = authenticateAsync.execute(new String[]{password, cookie}).get();
+            ResponseBody responseBody = response.body();
+            if (responseBody != null) {
+                if (responseBody.string().startsWith("authentication")) {
+                    Log.v("2nd attemp", "auth");
+                    authenticateAsync = new AuthenticateAsync();
+                    authenticateAsync.execute(new String[]{password, cookie}).get();
+                }
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
         }
     }
 

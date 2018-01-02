@@ -25,7 +25,8 @@
             android:screenOrientation="portrait" />
         <activity android:name=".Helpers" />
         <activity android:name=".init" />
-        <activity android:name=".PartnersList"></activity>
+        <activity android:name=".PartnersList" />
+        <activity android:name=".SelectedPartner"></activity>
     </application>
 
 </manifest>

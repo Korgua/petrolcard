@@ -34,6 +34,7 @@
         <activity android:name="hu.vhcom.www.petrolcard.Helpers" />
         <activity android:name="hu.vhcom.www.petrolcard.init" />
         <activity android:name="hu.vhcom.www.petrolcard.PartnersList" />
+        <activity android:name="hu.vhcom.www.petrolcard.SelectedPartner" />
 
         <meta-data
             android:name="android.support.VERSION"

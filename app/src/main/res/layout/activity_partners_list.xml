@@ -11,6 +11,6 @@
         android:layout_height="wrap_content"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp"
-        android:background="@color/colorPrimary"
-        />
+        android:background="@color/colorPrimary">
+    </ListView>
 </RelativeLayout>
