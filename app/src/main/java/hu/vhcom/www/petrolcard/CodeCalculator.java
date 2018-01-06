@@ -1,5 +1,6 @@
 package hu.vhcom.www.petrolcard;
 
+import android.icu.text.DateFormat;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
@@ -37,7 +38,7 @@ class CodeCalculator {
         lastNum = INPUT_CODE.charAt(4)-'0';
 
 
-
+        DateFormat df = DateFormat.getDateInstance();
         dayOfWeek = Integer.parseInt(new SimpleDateFormat("u",Locale.getDefault()).format(now));
         dayOfMonth = Integer.parseInt(new SimpleDateFormat("d",Locale.getDefault()).format(now));
         month = Integer.parseInt(new SimpleDateFormat("MM",Locale.getDefault()).format(now))%10;
@@ -57,10 +58,10 @@ class CodeCalculator {
         sb.append(Integer.toString(temp));
         sb.append(Character.toString(persCode_5th_char).toLowerCase());
 
-        /*Log.v("dayOfWeek",Integer.toString(dayOfWeek));
+        Log.v("dayOfWeek",Integer.toString(dayOfWeek));
         Log.v("dayOfMonth",Integer.toString(dayOfMonth));
         Log.v("month",Integer.toString(month));
-        Log.v("OUTPUT_CODE",sb.toString());*/
+        Log.v("OUTPUT_CODE",sb.toString());
 
         return sb.toString();
     }

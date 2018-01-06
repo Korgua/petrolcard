@@ -113,6 +113,7 @@ public class init extends AppCompatActivity {
             startActivity(new Intent(init.this, ServiceCode.class));
         } else {
             String PERSONAL_CODE = sharedPreferences.getString(VH_CONSTANTS.getServiceCodeKey(), "0");
+            String COOKIE = sharedPreferences.getString("cookie", "0");
 
             myImage = new ImageView(this);
             myImage.setAlpha(0f);
@@ -121,12 +122,17 @@ public class init extends AppCompatActivity {
             replaceView(progressServiceCode, myImage);
             myImage.animate().alpha(1f).setDuration(DURATION);
             myImage.animate().start();
-                Authenticate(PERSONAL_CODE);
+            if (COOKIE.equals("0")) {
+                Authenticate(PERSONAL_CODE, null);
+            } else {
                 try {
-                    String cookie = sharedPreferences.getString("cookie", "0");
                     DownloadXmlAsync downloadXmlAsync = new DownloadXmlAsync();
-                    String xml = downloadXmlAsync.execute(cookie).get();
-                    Log.v("downloaded xml",xml);
+                    String xml = downloadXmlAsync.execute(COOKIE).get();
+                    if(xml.contains("denied") || xml.contains("failed")){
+                        Authenticate(PERSONAL_CODE,COOKIE);
+                    }
+                    Log.v("Downloaded xml",xml);
+                    /*
                     try {
                         OutputStreamWriter outputStreamWriter = new OutputStreamWriter(openFileOutput("partnerlist.xml", Context.MODE_PRIVATE));
                         outputStreamWriter.write(xml);
@@ -135,18 +141,24 @@ public class init extends AppCompatActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                    */
 
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
 
+        }
     }
 
-    public void Authenticate(String PERSONAL_CODE){
+    public void Authenticate(String PERSONAL_CODE, String COOKIE){
         try {
-            GetCookieAsync getCookieAsync = new GetCookieAsync();
-            String cookie = getCookieAsync.execute().get();
+            String cookie;
+            if(COOKIE == null) {
+                GetCookieAsync getCookieAsync = new GetCookieAsync();
+                cookie = getCookieAsync.execute().get();
+            }
+            else cookie = COOKIE;
             //String cookie = getCookie();
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putString("cookie", cookie);

@@ -1,4 +1,0 @@
-#Sat Dec 30 19:57:08 CET 2017
-base.0=D\:\\git\\Petrolcard\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
-path.0=classes.dex
-renamed.0=classes.dex
